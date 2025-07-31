@@ -11,4 +11,9 @@
     <PackageReference Include="Confluent.Kafka" Version="2.11.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\KafkaDemo.Core\KafkaDemo.Core.csproj" />
+    <ProjectReference Include="..\KafkaDemo.Infrastructure\KafkaDemo.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

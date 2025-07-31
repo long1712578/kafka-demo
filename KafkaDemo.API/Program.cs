@@ -1,5 +1,8 @@
-var builder = WebApplication.CreateBuilder(args);
+using KafkaDemo.Core.Interfaces;
+using KafkaDemo.Infrastructure;
 
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddSingleton<IKafkaProducer>(new KafkaProducer("localhost:9092"));
 // Add services to the container.
 
 builder.Services.AddControllers();
