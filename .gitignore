@@ -1,0 +1,41 @@
+# .NET build artifacts
+bin/
+obj/
+out/
+*.user
+*.suo
+*.csproj.user
+*.vs/
+
+# Logs
+*.log
+logs/
+
+# Docker volumes and Kafka logs
+data/
+tmp/
+kafka-logs/
+kraft-combined-logs/
+meta.properties
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+
+# Kafka config files (optional)
+kafka.properties
+
+# Environment files
+.env
+
+# Docker artifacts
+*.pid
+docker-compose.override.yml
+
+# Node.js (if using frontend later)
+node_modules/
