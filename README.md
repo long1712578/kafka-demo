@@ -18,7 +18,7 @@ KafkaDemo.Consumer is a simple .NET 8 console application demonstrating how to c
 
 1. **Clone the repository:**
 ```bash
-git clone [<your-repo-url>](https://github.com/long1712578/kafka-demo.git) 
+git clone https://github.com/long1712578/kafka-demo.git
 cd KafkaDemo.Consumer
 ```
 2. **Install dependencies:**
