@@ -24,12 +24,21 @@ public class KafkaConsumerService : BackgroundService
                 BootstrapServers = _kafkaSettings.BootstrapServers,
                 GroupId = _kafkaSettings.GroupId,
                 AutoOffsetReset = AutoOffsetReset.Earliest,
-                EnableAutoCommit = true,
+                EnableAutoCommit = false,
             };
 
-            using var consumer = new ConsumerBuilder<Ignore, string>(config).Build();
+            using var consumer = new ConsumerBuilder<Ignore, string>(config)
+                .SetErrorHandler((_, e) =>
+                {
+                    _logger.LogError($"Kafka error: {e.Reason}");
+                    Console.WriteLine($"Kafka error: {e.Reason}");
+                })
+                .Build();
+
             consumer.Subscribe(_kafkaSettings.Topic);
+            _logger.LogInformation($"Kafka consumer subscribed to topic: {_kafkaSettings.Topic}");
             Console.WriteLine("Consumer {0} started...", _kafkaSettings.Topic);
+
             try
             {
                 while (!stoppingToken.IsCancellationRequested)
@@ -45,7 +54,12 @@ public class KafkaConsumerService : BackgroundService
             catch (OperationCanceledException)
             {
                 _logger.LogInformation("Stopping Kafka consumer...");
-                Console.WriteLine("CStopping Kafka consumer...");
+                Console.WriteLine("Stopping Kafka consumer...");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Kafka consumer exception: {ex.Message}");
+                Console.WriteLine($"Kafka consumer exception: {ex.Message}");
             }
             finally
             {
