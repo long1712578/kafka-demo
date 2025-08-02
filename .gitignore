@@ -27,8 +27,8 @@ Thumbs.db
 .idea/
 *.swp
 
-# Kafka config files (optional)
-kafka.properties
+# # Kafka config files (optional)
+# kafka.properties
 
 # Environment files
 .env
