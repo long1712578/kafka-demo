@@ -39,31 +39,21 @@ public class KafkaConsumerService : BackgroundService
             _logger.LogInformation($"Kafka consumer subscribed to topic: {_kafkaSettings.Topic}");
             Console.WriteLine("Consumer {0} started...", _kafkaSettings.Topic);
 
-            try
+            while (!stoppingToken.IsCancellationRequested)
             {
-                while (!stoppingToken.IsCancellationRequested)
+                try
                 {
                     var result = consumer.Consume(stoppingToken);
                     if (result != null)
                     {
                         _logger.LogInformation($"Received message: {result.Message.Value}");
-                        Console.WriteLine("Received message {0}", result.Message.Value);
                     }
                 }
-            }
-            catch (OperationCanceledException)
-            {
-                _logger.LogInformation("Stopping Kafka consumer...");
-                Console.WriteLine("Stopping Kafka consumer...");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Kafka consumer exception: {ex.Message}");
-                Console.WriteLine($"Kafka consumer exception: {ex.Message}");
-            }
-            finally
-            {
-                consumer.Close();
+                catch (ConsumeException e)
+                {
+                    _logger.LogError($"Error consuming message: {e.Error.Reason}");
+                    var result = consumer.Consume(stoppingToken);
+                }
             }
         });
     }
