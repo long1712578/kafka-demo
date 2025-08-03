@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KafkaDemo.Infrastructure", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KafkaDemo.Consume", "KafkaDemo.Consume\KafkaDemo.Consume.csproj", "{E60D7810-D360-4930-81EA-02F1811EE837}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KafkaDemo.Tests", "KafkaDemo.Tests\KafkaDemo.Tests.csproj", "{775A2667-17C6-47B2-9C6A-D77BEE12EA1F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{E60D7810-D360-4930-81EA-02F1811EE837}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E60D7810-D360-4930-81EA-02F1811EE837}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E60D7810-D360-4930-81EA-02F1811EE837}.Release|Any CPU.Build.0 = Release|Any CPU
+		{775A2667-17C6-47B2-9C6A-D77BEE12EA1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{775A2667-17C6-47B2-9C6A-D77BEE12EA1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{775A2667-17C6-47B2-9C6A-D77BEE12EA1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{775A2667-17C6-47B2-9C6A-D77BEE12EA1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
