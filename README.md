@@ -44,8 +44,55 @@ using var consumer = new ConsumerBuilder<Ignore, string>(config).Build(); consum
 while (true) { var consumeResult = consumer.Consume(); Console.WriteLine($"Received message: {consumeResult.Message.Value}"); }
 ```
 
-## Project Structure
-**KafkaDemo.Consumer/ ├── Program.cs └── README.md**
+# Kafka + Kafka UI with Docker Compose (KRaft Mode)
+
+This project provides a **Kafka cluster running in KRaft mode (no Zookeeper)**, along with **Kafka UI** for easy topic browsing, producing, and consuming messages.
+
+---
+
+## 🛠️ Prerequisites
+
+- Docker
+- Docker Compose
+- (Optional) `uuidgen` if you want to generate your own Cluster ID
+
+---
+
+## 🚀 How to Start
+
+1. **Start the services:**
+
+   ```bash
+   docker-compose up -d
+
+# Kafka + Kafka-UI + Docker Compose (Bitnami Image, KRaft mode)
+
+## 📝 Mục tiêu
+
+- Triển khai **Kafka** chạy bằng Docker Compose
+- Không cần Zookeeper (dùng KRaft mode)
+- Sử dụng **Kafka-UI** để quản lý topics
+- Cho phép:
+  - Client (producer/consumer) bên ngoài kết nối qua `localhost:9092`
+  - Các container khác (như Kafka UI) kết nối qua network nội bộ `kafka:29092`
+
+---
+
+## 🏗️ Kiến trúc
+
+```plaintext
+  ┌─────────────┐
+  │  kafka-ui   │  --> kết nối nội bộ --> kafka:29092
+  └─────────────┘
+         │
+         │
+  ┌─────────────┐
+  │   Kafka     │
+  └─────────────┘
+         │
+         │
+  <==> client app bên ngoài connect qua localhost:9092
+
 
 ## License
 
