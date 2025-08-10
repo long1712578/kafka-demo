@@ -25,6 +25,7 @@ namespace KafkaDemo.Infrastructure
                     GroupId = KafkaConfig.GroupId,
                     AutoOffsetReset = AutoOffsetReset.Earliest,
                     EnableAutoCommit = false,
+                    SecurityProtocol = SecurityProtocol.Plaintext // Sử dụng Plaintext nếu không có bảo mật, hoặc SecurityProtocol.SaslPlaintext nếu cần xác thực
                 };
 
                 using var consumer = new ConsumerBuilder<Ignore, string>(config)
