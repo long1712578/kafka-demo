@@ -1,4 +1,5 @@
 ﻿using KafkaDemo.Core.Models;
+using System.Threading.Tasks;
 
 namespace KafkaDemo.Core.Interfaces
 {
@@ -6,5 +7,6 @@ namespace KafkaDemo.Core.Interfaces
     {
         Task PublishAsync(string topic, KafkaMessage message);
         Task PublishAsync(string topic, string message);
+        Task PublishAsync(string topic, ChatMessage message);
     }
 }

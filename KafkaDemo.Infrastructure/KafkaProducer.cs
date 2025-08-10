@@ -41,5 +41,19 @@ namespace KafkaDemo.Infrastructure
         {
             await _producer.ProduceAsync(topic, new Message<Null, string> { Value = message });
         }
+
+        public async Task PublishAsync(string topic, ChatMessage message)
+        {
+            var json = JsonSerializer.Serialize(message);
+            try
+            {
+                var result = await _producer.ProduceAsync(topic, new Message<Null, string> { Value = json });
+                Console.WriteLine($"Produced message to {result.TopicPartitionOffset}: {json}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Producer error: {ex.Message}");
+            }
+        }
     }
 }

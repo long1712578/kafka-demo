@@ -1,5 +1,6 @@
 ﻿using KafkaDemo.Core.Interfaces;
 using KafkaDemo.Core.Models;
+using KafkaDemo.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KafkaDemo.API.Controllers
@@ -23,6 +24,13 @@ namespace KafkaDemo.API.Controllers
             message.CreatedAt = DateTime.UtcNow;
             await _producer.PublishAsync("demo-topic", message);
             return Ok("Message published!");
+        }
+
+        [HttpPost("send")]
+        public async Task<IActionResult> SendMessage([FromBody] ChatMessage message)
+        {
+            await _producer.PublishAsync("chat-topic", message);
+            return Ok("Message queued to Kafka");
         }
 
     }
