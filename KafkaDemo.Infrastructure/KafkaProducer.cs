@@ -7,7 +7,7 @@ namespace KafkaDemo.Infrastructure
 {
     public class KafkaProducer : IKafkaProducer
     {
-        private readonly IProducer<Null, string> _producer;
+        private readonly IProducer<string, string> _producer;
 
         public KafkaProducer(string bootstrapServers)
         {
@@ -21,7 +21,7 @@ namespace KafkaDemo.Infrastructure
                 MaxInFlight = 5,                    // tối đa message đang chờ ack
                 CompressionType = CompressionType.Snappy, // tăng hiệu suất
             };
-            _producer = new ProducerBuilder<Null, string>(config).Build();
+            _producer = new ProducerBuilder<string, string>(config).Build();
         }
 
         public async Task PublishAsync(string topic, KafkaMessage message)
@@ -29,7 +29,7 @@ namespace KafkaDemo.Infrastructure
             var json = JsonSerializer.Serialize(message);
             try
             {
-                var result = await _producer.ProduceAsync(topic, new Message<Null, string> { Value = json });
+                var result = await _producer.ProduceAsync(topic, new Message<string, string> { Key = "key123", Value = json, Headers = { } });
                 Console.WriteLine($"Produced message to {result.TopicPartitionOffset}: {json}");
             }
             catch (Exception ex)
@@ -39,7 +39,7 @@ namespace KafkaDemo.Infrastructure
         }
         public async Task PublishAsync(string topic, string message)
         {
-            await _producer.ProduceAsync(topic, new Message<Null, string> { Value = message });
+            await _producer.ProduceAsync(topic, new Message<string, string> { Key = "key123", Value = message });
         }
 
         public async Task PublishAsync(string topic, ChatMessage message)
@@ -47,7 +47,7 @@ namespace KafkaDemo.Infrastructure
             var json = JsonSerializer.Serialize(message);
             try
             {
-                var result = await _producer.ProduceAsync(topic, new Message<Null, string> { Value = json });
+                var result = await _producer.ProduceAsync(topic, new Message<string, string> { Key = "key123", Value = json });
                 Console.WriteLine($"Produced message to {result.TopicPartitionOffset}: {json}");
             }
             catch (Exception ex)

@@ -1,107 +1,241 @@
-# KafkaDemo.Consumer
+# 🚀 KAFKA DEMO - ADVANCED LEARNING PROJECT
 
-KafkaDemo.Consumer is a simple .NET 8 console application demonstrating how to consume messages from an Apache Kafka topic using the pub/sub (publish/subscribe) pattern.
+## 📋 GIỚI THIỆU
 
-## Features
+Project này được thiết kế để học Kafka từ cơ bản đến expert level với .NET. Bao gồm:
 
-- Built with C# 12 and .NET 8
-- Demonstrates Kafka consumer implementation
-- Easy to extend for real-world pub/sub scenarios
+- **3-node Kafka Cluster** với Zookeeper ensemble
+- **Schema Registry** cho Avro serialization
+- **Kafka Connect** cho integration patterns
+- **Monitoring Stack** (Prometheus + Grafana + Kafka UI)
+- **Advanced .NET Examples** (Producers, Consumers, Admin)
 
-## Prerequisites
+## 🏗️ KIẾN TRÚC HỆ THỐNG
 
-- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
-- [Apache Kafka](https://kafka.apache.org/) instance (local or remote)
-- (Optional) [Confluent.Kafka](https://www.nuget.org/packages/Confluent.Kafka/) NuGet package for Kafka integration
-
-## Getting Started
-
-1. **Clone the repository:**
-```bash
-git clone https://github.com/long1712578/kafka-demo.git
-cd KafkaDemo.Consumer
 ```
-2. **Install dependencies:**
-If you use Confluent.Kafka, run:
-```bash
-dotnet add package Confluent.Kafka
+┌─────────────────────────────────────────────────────────────────┐
+│                         KAFKA CLUSTER                           │
+│  ┌──────────┐      ┌──────────┐      ┌──────────┐             │
+│  │ Kafka 1  │      │ Kafka 2  │      │ Kafka 3  │             │
+│  │ :19092   │◄────►│ :29092   │◄────►│ :39092   │             │
+│  └──────────┘      └──────────┘      └──────────┘             │
+│       │                 │                 │                      │
+│       └─────────────────┴─────────────────┘                      │
+│                         │                                        │
+│                         ▼                                        │
+│         ┌───────────────────────────────┐                       │
+│         │   ZOOKEEPER ENSEMBLE          │                       │
+│         │   ZK1:2181 ZK2:2182 ZK3:2183  │                       │
+│         └───────────────────────────────┘                       │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│                      SUPPORTING SERVICES                        │
+│                                                                 │
+│  Schema Registry:8081  │  Kafka Connect:8083                   │
+│  Kafka UI:8080         │  AKHQ:8082                            │
+│  Prometheus:9090       │  Grafana:3000                         │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
-3. **Configure Kafka settings:**
-Update your consumer configuration in `Program.cs` or a configuration file with your Kafka broker and topic details.
+## 🎯 FEATURES
 
-4. **Run the application:**
-```bash
+### Kafka Infrastructure
+- ✅ 3-node Kafka cluster với high availability
+- ✅ 3-node Zookeeper ensemble
+- ✅ Replication Factor = 3, Min ISR = 2
+- ✅ JMX monitoring enabled
+- ✅ Compression (Snappy)
+
+### Producers
+- ✅ **AdvancedKafkaProducer**: Custom partitioner, batch processing
+- ✅ **TransactionalKafkaProducer**: Exactly-once semantics
+- ✅ Key-based partitioning & explicit partition routing
+
+### Consumers
+- ✅ **AdvancedKafkaConsumer**: Manual commit, rebalancing callbacks
+- ✅ **ParallelKafkaConsumer**: Multi-threaded processing
+- ✅ Consumer groups & offset management
+
+### Admin Operations
+- ✅ Topic CRUD, partition management
+- ✅ Consumer group monitoring
+- ✅ Cluster health checks
+
+### Monitoring
+- ✅ Kafka UI, AKHQ, Prometheus, Grafana
+
+---
+
+## 🚀 QUICK START
+
+### 1. Start Kafka Cluster
+
+```powershell
+cd d:\Projects\KafkaDemo\kafka
+docker-compose up -d
+```
+
+**Verify services:**
+```powershell
+docker-compose ps
+```
+
+### 2. Access Management UIs
+
+| Service | URL | Credentials |
+|---------|-----|-------------|
+| Kafka UI | http://localhost:8080 | - |
+| AKHQ | http://localhost:8082 | - |
+| Grafana | http://localhost:3000 | admin/admin |
+| Prometheus | http://localhost:9090 | - |
+
+### 3. Build & Run .NET Projects
+
+```powershell
+cd d:\Projects\KafkaDemo
+dotnet restore
+dotnet build
+
+# Run API
+dotnet run --project KafkaDemo.API
+
+# Run Consumer
 dotnet run --project KafkaDemo.Consumer
 ```
-## Example Usage
 
-The current implementation prints a simple message to the console. Extend `Program.cs` to connect to Kafka and consume messages:
-```bash
-using Confluent.Kafka;
-var config = new ConsumerConfig { BootstrapServers = "localhost:9092", GroupId = "demo-consumer-group", AutoOffsetReset = AutoOffsetReset.Earliest };
-using var consumer = new ConsumerBuilder<Ignore, string>(config).Build(); consumer.Subscribe("your-topic");
-while (true) { var consumeResult = consumer.Consume(); Console.WriteLine($"Received message: {consumeResult.Message.Value}"); }
+---
+
+## 📚 PROJECT STRUCTURE
+
+```
+KafkaDemo/
+├── kafka/                          # Docker Compose setup
+│   ├── docker-compose.yml          # Full Kafka cluster + tools
+│   └── prometheus.yml              # Prometheus config
+│
+├── KafkaDemo.Infrastructure/       # Kafka implementations
+│   ├── Producers/
+│   │   ├── AdvancedKafkaProducer.cs
+│   │   └── TransactionalKafkaProducer.cs
+│   ├── Consumers/
+│   │   ├── AdvancedKafkaConsumer.cs
+│   │   └── ParallelKafkaConsumer.cs
+│   └── Admin/
+│       └── KafkaAdminService.cs
+│
+├── KAFKA_LEARNING_GUIDE.md         # Comprehensive learning guide
+└── README.md                        # This file
 ```
 
-# Kafka + Kafka UI with Docker Compose (KRaft Mode)
+---
 
-This project provides a **Kafka cluster running in KRaft mode (no Zookeeper)**, along with **Kafka UI** for easy topic browsing, producing, and consuming messages.
+## 🎓 LEARNING PATH
+
+**Week 1: Basics** - Setup, topics, simple producer/consumer  
+**Week 2: Intermediate** - Consumer groups, offset management  
+**Week 3: Advanced** - Transactions, custom partitioners  
+**Week 4: Expert** - Schema Registry, performance tuning  
+
+📖 **Full Guide**: [KAFKA_LEARNING_GUIDE.md](./KAFKA_LEARNING_GUIDE.md)
 
 ---
 
-## 🛠️ Prerequisites
+## 🛠️ HANDS-ON EXERCISES
 
-- Docker
-- Docker Compose
-- (Optional) `uuidgen` if you want to generate your own Cluster ID
+### Exercise 1: Create Topic
 
----
+```bash
+docker exec kafka-tools kafka-topics --create \
+  --topic learning-topic \
+  --partitions 3 \
+  --replication-factor 3 \
+  --bootstrap-server kafka1:9092
+```
 
-## 🚀 How to Start
+### Exercise 2: Test Producer
 
-1. **Start the services:**
+```csharp
+var producer = new AdvancedKafkaProducer("localhost:19092", logger);
+await producer.PublishAsync("learning-topic", new KafkaMessage
+{
+    Id = Guid.NewGuid(),
+    Content = "Hello Kafka!",
+    CreatedAt = DateTime.UtcNow,
+    Type = "test"
+});
+```
 
-   ```bash
-   docker-compose up -d
+### Exercise 3: Test Failover
 
-# Kafka + Kafka-UI + Docker Compose (Bitnami Image, KRaft mode)
+```powershell
+# Stop a broker
+docker stop kafka1
 
-## 📝 Mục tiêu
+# Messages still available! (replication)
 
-- Triển khai **Kafka** chạy bằng Docker Compose
-- Không cần Zookeeper (dùng KRaft mode)
-- Sử dụng **Kafka-UI** để quản lý topics
-- Cho phép:
-  - Client (producer/consumer) bên ngoài kết nối qua `localhost:9092`
-  - Các container khác (như Kafka UI) kết nối qua network nội bộ `kafka:29092`
-
----
-
-## 🏗️ Kiến trúc
-
-```plaintext
-  ┌─────────────┐
-  │  kafka-ui   │  --> kết nối nội bộ --> kafka:29092
-  └─────────────┘
-         │
-         │
-  ┌─────────────┐
-  │   Kafka     │
-  └─────────────┘
-         │
-         │
-  <==> client app bên ngoài connect qua localhost:9092
-
-
-## License
-
-This project is licensed under the MIT License.
-
-## Contributing
-
-Contributions are welcome! Please open issues or submit pull requests for improvements.
+# Restart
+docker start kafka1
+```
 
 ---
 
-For more information about Kafka, visit the [official documentation](https://kafka.apache.org/documentation/).
+## 📊 MONITORING
+
+- **Kafka UI**: http://localhost:8080 - Browse topics, messages, consumer groups
+- **AKHQ**: http://localhost:8082 - Advanced management
+- **Grafana**: http://localhost:3000 - Metrics dashboards
+- **Prometheus**: http://localhost:9090 - Raw metrics
+
+---
+
+## 🔧 TROUBLESHOOTING
+
+### Cannot connect to Kafka?
+```powershell
+docker-compose ps          # Check services
+docker logs kafka1         # Check broker logs
+```
+
+### Consumer not receiving messages?
+```csharp
+AutoOffsetReset = AutoOffsetReset.Earliest  // Start from beginning
+```
+
+---
+
+## 📖 RESOURCES
+
+- 📘 [Learning Guide](./KAFKA_LEARNING_GUIDE.md) - Complete Kafka concepts
+- 📚 [Official Kafka Docs](https://kafka.apache.org/documentation/)
+- 🎓 [Confluent Platform](https://docs.confluent.io/)
+
+---
+
+## 🎯 WHAT YOU'LL LEARN
+
+✅ Kafka cluster architecture  
+✅ Producer/Consumer patterns  
+✅ Partitioning & replication  
+✅ Consumer groups & rebalancing  
+✅ Transactions (exactly-once)  
+✅ Performance tuning  
+✅ Monitoring & operations  
+✅ Production best practices  
+
+---
+
+## 👨‍💻 AUTHOR
+
+Project created for learning Kafka with .NET  
+**Happy Learning! 🚀**
+
+---
+
+## 🔗 QUICK LINKS
+
+- [📖 Learning Guide](./KAFKA_LEARNING_GUIDE.md)
+- [🎮 Kafka UI](http://localhost:8080)
+- [📊 Grafana](http://localhost:3000)
+
+**Start your Kafka journey today! 🎓**
