@@ -1,5 +1,24 @@
 # 🚀 KAFKA DEMO - ADVANCED LEARNING PROJECT
 
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/YOUR_USERNAME/KafkaDemo?quickstart=1)
+
+---
+
+## ☁️ CHẠY TRÊN GITHUB CODESPACES (KHÔNG CẦN DOCKER LOCAL)
+
+> **💡 Mới!** Bạn có thể chạy project này hoàn toàn trên cloud với GitHub Codespaces - không cần cài Docker trên máy!
+
+### Quick Start với Codespaces
+
+1. **Click badge** ở trên hoặc vào repo → Code → Codespaces → Create codespace
+2. **Đợi ~3 phút** để môi trường setup xong
+3. **Truy cập Kafka UI**: Tab Ports → Click port 8080
+4. **Bắt đầu code!** Kafka + Kafka UI đã chạy sẵn
+
+📖 **Hướng dẫn chi tiết**: [CODESPACES_GUIDE.md](./CODESPACES_GUIDE.md)
+
+---
+
 ## 📋 GIỚI THIỆU
 
 Project này được thiết kế để học Kafka từ cơ bản đến expert level với .NET. Bao gồm:
