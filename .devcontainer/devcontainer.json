@@ -1,72 +1,39 @@
 {
   "name": "KafkaDemo Development",
-  "dockerComposeFile": ["../docker-compose.yml", "docker-compose.devcontainer.yml"],
-  "service": "devcontainer",
-  "workspaceFolder": "/workspace",
-  
-  // Features to add
+  "image": "mcr.microsoft.com/devcontainers/dotnet:8.0",
   "features": {
-    "ghcr.io/devcontainers/features/dotnet:2": {
-      "version": "8.0"
-    },
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "dockerDashComposeVersion": "v2"
+    }
   },
-
-  // Forward ports for development
   "forwardPorts": [
-    9092,   // Kafka broker
-    8080,   // Kafka UI
-    5000,   // .NET API
-    5001    // .NET API HTTPS
+    9092,
+    8080,
+    5000,
+    5001
   ],
-
-  // Port labels for better UX
   "portsAttributes": {
     "9092": {
-      "label": "Kafka Broker",
-      "onAutoForward": "silent"
+      "label": "Kafka Broker"
     },
     "8080": {
       "label": "Kafka UI",
       "onAutoForward": "openBrowser"
     },
     "5000": {
-      "label": ".NET API",
-      "onAutoForward": "notify"
+      "label": ".NET API"
     }
   },
-
-  // Run commands after container is created
-  "postCreateCommand": "bash .devcontainer/scripts/post-create.sh",
-  
-  // Run when container starts each time
-  "postStartCommand": "bash .devcontainer/scripts/post-start.sh",
-
-  // VS Code extensions to install
+  "postCreateCommand": "dotnet restore && dotnet build",
+  "postStartCommand": "docker compose -f docker-compose.yml up -d && sleep 10 && echo '✅ Kafka is ready!'",
   "customizations": {
     "vscode": {
       "extensions": [
         "ms-dotnettools.csdevkit",
         "ms-dotnettools.csharp",
-        "ms-azuretools.vscode-docker",
-        "humao.rest-client",
-        "jeppeandersen.vscode-kafka",
-        "eamodio.gitlens"
-      ],
-      "settings": {
-        "terminal.integrated.defaultProfile.linux": "bash",
-        "editor.formatOnSave": true,
-        "dotnet.defaultSolution": "KafkaDemo.sln"
-      }
+        "ms-azuretools.vscode-docker"
+      ]
     }
   },
-
-  // Environment variables
-  "containerEnv": {
-    "KAFKA_BOOTSTRAP_SERVERS": "kafka:29092",
-    "ASPNETCORE_ENVIRONMENT": "Development"
-  },
-
-  // Run as non-root user for security
   "remoteUser": "vscode"
 }
