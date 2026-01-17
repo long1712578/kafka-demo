@@ -1,39 +1,11 @@
 {
-  "name": "KafkaDemo Development",
-  "image": "mcr.microsoft.com/devcontainers/dotnet:8.0",
-  "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {
-      "dockerDashComposeVersion": "v2"
-    }
-  },
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "waitFor": "onCreateCommand",
+  "postCreateCommand": "dotnet restore",
+  "postStartCommand": "docker compose up -d",
   "forwardPorts": [
-    9092,
     8080,
-    5000,
-    5001
-  ],
-  "portsAttributes": {
-    "9092": {
-      "label": "Kafka Broker"
-    },
-    "8080": {
-      "label": "Kafka UI",
-      "onAutoForward": "openBrowser"
-    },
-    "5000": {
-      "label": ".NET API"
-    }
-  },
-  "postCreateCommand": "dotnet restore && dotnet build",
-  "postStartCommand": "docker compose -f docker-compose.yml up -d && sleep 10 && echo '✅ Kafka is ready!'",
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "ms-dotnettools.csdevkit",
-        "ms-dotnettools.csharp",
-        "ms-azuretools.vscode-docker"
-      ]
-    }
-  },
-  "remoteUser": "vscode"
+    9092,
+    5000
+  ]
 }
