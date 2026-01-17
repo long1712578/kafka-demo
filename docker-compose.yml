@@ -1,13 +1,13 @@
 services:
 
   kafka:
-    image: bitnami/kafka:latest
+    image: bitnami/kafka:3.6
     container_name: kafka
     ports:
-      - "9092:9092"      # Expose external port
-      - "29092:29092"    # Internal listener for container communication
+      - "9092:9092" # Expose external port
+      - "29092:29092" # Internal listener for container communication
     environment:
-      - KAFKA_KRAFT_MODE=true                     # Use KRaft mode (no zookeeper)
+      - KAFKA_KRAFT_MODE=true # Use KRaft mode (no zookeeper)
       - KAFKA_CFG_NODE_ID=1
       - KAFKA_CFG_PROCESS_ROLES=broker,controller
       - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka:9093
