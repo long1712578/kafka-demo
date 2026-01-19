@@ -58,11 +58,21 @@ pipeline {
         
         stage('Deploy') {
             steps {
-                echo '🚀 Deploying to Docker Compose...'
+                echo '🚀 Deploying API container...'
                 sh """
-                    docker-compose stop api || true
-                    docker-compose rm -f api || true
-                    docker-compose up -d api
+                    # Stop and remove old API container
+                    docker stop kafkademo-api || true
+                    docker rm kafkademo-api || true
+                    
+                    # Run new API container
+                    docker run -d \
+                        --name kafkademo-api \
+                        --network kafka-demo_default \
+                        -p 5000:5000 \
+                        -e ASPNETCORE_ENVIRONMENT=Production \
+                        -e Kafka__BootstrapServers=kafka:29092 \
+                        --restart unless-stopped \
+                        ${DOCKER_IMAGE}:${DOCKER_TAG}
                 """
             }
         }
