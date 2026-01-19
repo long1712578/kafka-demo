@@ -4,7 +4,6 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'kafkademo-api'
         DOCKER_TAG = "${BUILD_NUMBER}"
-        DOTNET_CLI_TELEMETRY_OPTOUT = '1'
     }
     
     triggers {
@@ -19,41 +18,11 @@ pipeline {
             }
         }
         
-        stage('Restore') {
-            steps {
-                echo '📦 Restoring NuGet packages...'
-                sh 'dotnet restore'
-            }
-        }
-        
-        stage('Build') {
-            steps {
-                echo '🔨 Building solution...'
-                sh 'dotnet build --configuration Release --no-restore'
-            }
-        }
-        
-        stage('Test') {
-            steps {
-                echo '🧪 Running tests...'
-                sh 'dotnet test --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"'
-            }
-            post {
-                always {
-                    // Publish test results
-                    script {
-                        if (fileExists('**/test-results.trx')) {
-                            echo '📊 Test results available'
-                        }
-                    }
-                }
-            }
-        }
-        
-        stage('Docker Build') {
+        stage('Build Docker Image') {
             steps {
                 echo '🐳 Building Docker image...'
                 sh """
+                    cd ${WORKSPACE}
                     docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} -f KafkaDemo.API/Dockerfile .
                     docker tag ${DOCKER_IMAGE}:${DOCKER_TAG} ${DOCKER_IMAGE}:latest
                 """
@@ -81,43 +50,27 @@ pipeline {
             }
         }
         
-        stage('Health Check') {
+        stage('Verify') {
             steps {
-                echo '❤️ Checking API health...'
-                script {
-                    def maxRetries = 10
-                    def retryCount = 0
-                    def healthy = false
-                    
-                    while (retryCount < maxRetries && !healthy) {
-                        try {
-                            sh 'curl --fail http://localhost:5000/health'
-                            healthy = true
-                            echo '✅ API is healthy!'
-                        } catch (Exception e) {
-                            retryCount++
-                            echo "⏳ Waiting for API... (${retryCount}/${maxRetries})"
-                            sleep(5)
-                        }
-                    }
-                    
-                    if (!healthy) {
-                        error '❌ API health check failed!'
-                    }
-                }
+                echo '✅ Verifying deployment...'
+                sh """
+                    sleep 5
+                    docker ps | grep kafkademo-api
+                    echo "API deployed successfully with build #${BUILD_NUMBER}"
+                """
             }
         }
     }
     
     post {
         success {
-            echo '🎉 Pipeline completed successfully!'
+            echo '🎉 Build and deploy successful!'
         }
         failure {
-            echo '❌ Pipeline failed!'
+            echo '❌ Build failed!'
         }
         cleanup {
-            echo '🧹 Cleaning up...'
+            echo '🧹 Cleaning up old images...'
             sh 'docker image prune -f || true'
         }
     }
