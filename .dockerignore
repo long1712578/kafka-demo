@@ -1,0 +1,39 @@
+# Ignore build output
+**/bin/
+**/obj/
+**/out/
+
+# Ignore test files in production
+**/*.Tests/
+**/TestResults/
+
+# Ignore IDE files
+**/.vs/
+**/.vscode/
+**/.idea/
+**/*.user
+**/*.suo
+
+# Ignore git
+.git/
+.gitignore
+
+# Ignore docs
+**/*.md
+!README.md
+
+# Ignore local configs
+**/appsettings.Development.json
+**/appsettings.Local.json
+
+# Ignore logs
+**/logs/
+**/*.log
+
+# Ignore node_modules if any
+**/node_modules/
+
+# Ignore Docker files (we copy selectively)
+**/Dockerfile*
+**/.dockerignore
+**/docker-compose*.yml
