@@ -60,9 +60,9 @@ pipeline {
             steps {
                 echo '🚀 Deploying to Docker Compose...'
                 sh """
-                    docker compose stop api || true
-                    docker compose rm -f api || true
-                    docker compose up -d api
+                    docker-compose stop api || true
+                    docker-compose rm -f api || true
+                    docker-compose up -d api
                 """
             }
         }
