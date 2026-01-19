@@ -14,7 +14,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo '📥 Checking out code...'
-                git branch: 'master', url: 'https://github.com/long1712578/kafka-demo.git'
+                checkout scm
             }
         }
         
