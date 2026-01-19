@@ -7,6 +7,10 @@ pipeline {
         DOTNET_CLI_TELEMETRY_OPTOUT = '1'
     }
     
+    triggers {
+        githubPush()  // Trigger on GitHub push events
+    }
+    
     stages {
         stage('Checkout') {
             steps {

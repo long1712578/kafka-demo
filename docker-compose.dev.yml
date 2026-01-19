@@ -1,0 +1,13 @@
+# Development Environment Override
+services:
+  api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Kafka__BootstrapServers=kafka:29092
+      - Logging__LogLevel__Default=Debug
+    ports:
+      - "5000:5000"
+
+  kafka-ui:
+    ports:
+      - "8080:8080"

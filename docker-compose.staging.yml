@@ -1,0 +1,19 @@
+# Staging Environment Override
+services:
+  api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Staging
+      - Kafka__BootstrapServers=kafka:29092
+      - Logging__LogLevel__Default=Information
+    ports:
+      - "5001:5000"
+    deploy:
+      replicas: 2 # For testing load balancing
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+
+  kafka:
+    environment:
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 2

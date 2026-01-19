@@ -1,41 +1,34 @@
-# .NET build artifacts
-bin/
-obj/
-out/
+# Secrets and sensitive files
+.env
+*.pfx
+*.p12
+*.jks
+security/certs/*
+!security/certs/.gitkeep
+
+# Build outputs
+**/bin/
+**/obj/
+**/out/
+
+# IDE
+.vs/
+.vscode/
+.idea/
 *.user
 *.suo
-*.csproj.user
-*.vs/
 
 # Logs
 *.log
 logs/
 
-# Docker volumes and Kafka logs
-data/
-tmp/
-kafka-logs/
-kraft-combined-logs/
-meta.properties
+# Docker
+.dockerignore
 
-# OS files
+# OS
 .DS_Store
 Thumbs.db
 
-# IDE files
-.vscode/
-.idea/
-*.swp
-
-# # Kafka config files (optional)
-# kafka.properties
-
-# Environment files
-.env
-
-# Docker artifacts
-*.pid
-docker-compose.override.yml
-
-# Node.js (if using frontend later)
-node_modules/
+# Monitoring data
+prometheus_data/
+grafana_data/
