@@ -11,9 +11,9 @@ namespace KafkaDemo.Infrastructure.Admin
     public class KafkaAdminService
     {
         private readonly IAdminClient _adminClient;
-        private readonly ILogger<KafkaAdminService> _logger;
+        private readonly ILogger _logger;
 
-        public KafkaAdminService(string bootstrapServers, ILogger<KafkaAdminService> logger)
+        public KafkaAdminService(string bootstrapServers, ILogger logger)
         {
             _logger = logger;
             var config = new AdminClientConfig

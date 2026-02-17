@@ -1,0 +1,69 @@
+@KafkaDemo.API_HostAddress = http://localhost:5224
+
+###
+### Task 1.1: Kafka Topic Management REST API Tests
+###
+
+### 1. List all existing topics
+GET {{KafkaDemo.API_HostAddress}}/api/kafka/topics
+Accept: application/json
+
+###
+
+### 2. Initialize Module A Demo Topics (auto-create all 5 topics)
+POST {{KafkaDemo.API_HostAddress}}/api/kafka/init-module-a-topics
+Accept: application/json
+
+###
+
+### 3. Get topic metadata for user-events
+GET {{KafkaDemo.API_HostAddress}}/api/kafka/topics/user-events/metadata
+Accept: application/json
+
+###
+
+### 4. Get topic metadata for orders
+GET {{KafkaDemo.API_HostAddress}}/api/kafka/topics/orders/metadata
+Accept: application/json
+
+###
+
+### 5. Get topic metadata for payments
+GET {{KafkaDemo.API_HostAddress}}/api/kafka/topics/payments/metadata
+Accept: application/json
+
+###
+
+### 6. Get topic metadata for notifications
+GET {{KafkaDemo.API_HostAddress}}/api/kafka/topics/notifications/metadata
+Accept: application/json
+
+###
+
+### 7. Get topic metadata for order-processing.DLQ
+GET {{KafkaDemo.API_HostAddress}}/api/kafka/topics/order-processing.DLQ/metadata
+Accept: application/json
+
+###
+
+### 8. Create custom topic (example)
+POST {{KafkaDemo.API_HostAddress}}/api/kafka/topics
+Content-Type: application/json
+
+{
+  "name": "custom-test-topic",
+  "numPartitions": 5,
+  "replicationFactor": 1,
+  "configs": {
+    "retention.ms": "604800000",
+    "compression.type": "gzip"
+  }
+}
+
+###
+
+### 9. Get metadata for custom topic
+GET {{KafkaDemo.API_HostAddress}}/api/kafka/topics/custom-test-topic/metadata
+Accept: application/json
+
+###

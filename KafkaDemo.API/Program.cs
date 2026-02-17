@@ -7,6 +7,12 @@ var builder = WebApplication.CreateBuilder(args);
 var kafkaBootstrapServers = builder.Configuration["Kafka:BootstrapServers"] ?? "localhost:9092";
 builder.Services.AddSingleton<IKafkaProducer>(new KafkaProducer(kafkaBootstrapServers));
 
+// Task 1.1: Register KafkaTopicProvisioningService to auto-create topics on startup
+builder.Services.AddHostedService(sp => 
+    new KafkaTopicProvisioningService(
+        kafkaBootstrapServers,
+        sp.GetRequiredService<ILogger<KafkaTopicProvisioningService>>()));
+
 // Add health checks
 builder.Services.AddHealthChecks();
 
@@ -27,7 +33,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Register background service for comsume
+// Register background service for consume
 builder.Services.AddHostedService<KafkaSignalRConsumerService>();
 
 var app = builder.Build();

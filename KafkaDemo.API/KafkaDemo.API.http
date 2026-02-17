@@ -4,3 +4,8 @@ GET {{KafkaDemo.API_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+# Thực hiện trong Docker/Kafka console:
+kafka-topics --create --topic user-events --partitions 3 --replication-factor 1
+
+# Response
